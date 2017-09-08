@@ -1,5 +1,9 @@
 Laravel API Authentication system Documentations
 
+**For the the endpoint wich requires the user to be authenticated
+ Add x-access-token header and the value of this header add the token which you have
+ obtained from the login endpoint
+
 Register a new User
 POST /api/v1/register guest
 
@@ -111,7 +115,7 @@ POST /api/v1/update_password
               "error": null,
               "data": null
             }
-          500 error    
+          500 error
              {
                "status": "$error"
              }
