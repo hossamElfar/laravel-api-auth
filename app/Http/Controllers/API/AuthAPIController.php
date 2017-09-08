@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
@@ -28,7 +29,7 @@ class AuthAPIController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->only('update');
+        $this->middleware('auth')->only('update', 'updatePassword');
     }
 
     /**
@@ -144,11 +145,41 @@ class AuthAPIController extends Controller
             $user = Auth::user();
             $user->update($data);
             $user->save();
-            return response()->json(['status' => 'Updated In successfully'], 200);
+            return response()->json(['user'=>$user,'status' => 'Updated In successfully'], 200);
         }catch (\Exception $e){
             return response()->json(['status' => 'Already taken email' ], 500);
         }
 
+    }
+
+    /**
+     * Update The authenticated user password
+     * 
+     * @param Request $request
+     * @return mixed
+     */
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+        $data = $request->all();
+        $validation = Validator::make($data, [
+            'password' => 'required',
+            'new_password' => 'required|different:password'
+        ]);
+
+        if ($validation->fails()) {
+            $data1['statues'] = "302 Ok";
+            $data1['error'] = "couldn't update password";
+            $data1['data'] = $validation->errors();
+            return response()->json($data1, 302);
+        }
+
+        $user->password = Hash::make($data['new_password']);
+        $user->save();
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
+        return response()->json($data1, 200);
     }
 
     /**

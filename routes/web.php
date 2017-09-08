@@ -27,6 +27,7 @@ Route::group(['prefix' => 'api/v1','middleware' => 'api'], function () {
     Route::post('register', 'API\AuthAPIController@register');
     Route::post('login', 'API\AuthAPIController@login');
     Route::patch('update','API\AuthAPIController@update');
+    Route::post('update_password','API\AuthAPIController@updatePassword');
     Route::get('user/{id}','API\AuthAPIController@show');
     
 });
