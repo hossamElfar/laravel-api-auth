@@ -18,3 +18,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'api/v1','middleware' => 'api'], function () {
+
+    /**
+     * Users Authentication
+     */
+    Route::post('register', 'API\AuthAPIController@register');
+    Route::post('login', 'API\AuthAPIController@login');
+    Route::patch('update','API\AuthAPIController@update');
+    Route::get('user/{id}','API\AuthAPIController@show');
+    
+});
