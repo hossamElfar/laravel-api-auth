@@ -1,0 +1,117 @@
+Laravel API Authentication system Documentations
+
+Register a new User
+POST /api/v1/register guest
+
+    body
+      {
+        "email": "String Requird Unique" ,
+        "password": "String Required",
+        "name": "String Required",
+        "phone": "String Required "
+      }
+
+    Response
+     200 Ok
+      {
+        "message": "Thank you for registering."
+      }
+     302 Error
+      {
+        "$attribute_name": ["errors"]
+      }
+
+Login for existing user
+POST /api/v1/login guest
+
+    body
+      {
+        "email": "String required",
+        "password": "String reuired"
+      }
+
+    response
+     200 Ok
+      {
+        "status": "Logged In successfully",
+        "token": "$token"
+      }
+     401 Unauthorized
+      {
+        "error": "Invalid Credentials"
+      }
+     302
+      {
+       "$attribute_name": ["errors"]
+      }
+
+Info of a user by ID
+GET /api/v1/user/:id guest
+
+      body
+
+      response
+        200 ok
+         {
+           "user": {
+               "id": "user.id",
+               "name": "user.name",
+               "email": "user.email",
+               "phone": "user.phone",
+               "created_at": "user.created_at",
+               "updated_at": "user.updated_at"
+           }
+         }
+         404 Not found
+          {
+            "status": "There is no user with id $id"
+          }
+
+Update the authorized user
+PATH /api/v1/update authenticated
+
+      body
+        {
+          "email": "String Optional Unique" ,
+          "name": "String Optional",
+          "phone": "String Optional "
+        }
+
+       response
+         200 Ok
+          {
+            "user": {
+              "id": "user.id",
+              "name": "user.name",
+              "email": "user.email",
+              "phone": "user.phone",
+              "created_at": "user.created_at",
+              "updated_at": "user.updated_at"
+            },
+            "status": "Updated In successfully"
+          }
+          500 error
+            {
+              "status": "$error"
+            }
+
+Update the authorized user password
+POST /api/v1/update_password
+
+        body
+          {
+            "password": "String required",
+            "new_password": "String required"
+          }
+
+        response
+          200 Ok
+            {
+              "statues": "200 Ok",
+              "error": null,
+              "data": null
+            }
+          500 error    
+             {
+               "status": "$error"
+             }
